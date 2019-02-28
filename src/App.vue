@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import ResizableDivView from './components/ResizalbeDivView.vue';
+import ResizableDivView from './components/ResizableDivView.vue';
 
 @Component({
   components: {

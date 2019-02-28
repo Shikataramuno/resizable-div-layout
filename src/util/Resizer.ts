@@ -19,14 +19,13 @@ export default class Resizer {
         resizer.stopDrag(e);
         return;
       }
-      //consoleLog("doDrag(e)");
       resizer.mousemove(e);
-    }
+    };
     resizer.stopDrag = (e) => {
       console.log('stopDrag(e)');
       document.documentElement.removeEventListener('mousemove', resizer.doDrag, false);
       document.documentElement.removeEventListener('mouseup', resizer.stopDrag, false);
-    }
+    };
   }
 
   static resizerX(resizerID: string, mousemove: (e: MouseEvent) => void): void {

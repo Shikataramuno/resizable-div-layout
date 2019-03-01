@@ -10,19 +10,21 @@
       <div id="element2"
         ref="element2"
         class="element"
-        style="width: 30%; height:10px; float: right; position: relative;">
+        style="width: 30%; height:10px; position: relative;">
         Element 2
+        <!--
         <div id="resizerXY"
           ref="resizeXY"
           draggable="true"
           style="width: 10px; height: 10px; background: blue; position:absolute; left: 0; bottom: 0;"
           @drag="resizeXYHandler">
         </div>
+        -->
       </div>
       <div id="resizerX"
         ref="resizeX"
         draggable="true"
-        style="width: 10px; height:100%; background: red; float: right;"
+        style="width: 10px; height:100%; background: red;"
         @drag="resizeXHandler">
       </div>
       <div id="element1"

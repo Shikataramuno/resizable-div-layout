@@ -88,6 +88,7 @@ export default class ResizableDivView extends Vue {
       + resizeArea!.offsetLeft
       - x
       + 'px';
+    console.log('element2.style.width = ' + element2.style.width);
   }
   resizeY(y: number): void {
     const element3: HTMLDivElement = this.$refs.element3;
@@ -103,11 +104,16 @@ export default class ResizableDivView extends Vue {
     this.onresize();
   }
   resizeXYHandler(e: MouseEvent): void {
-    this.resizeX(e.pageX + 10);
+    if (e.pageX) {
+      this.resizeX(e.pageX + 10);
+    }
     this.resizeY(e.pageY + 50);
   }
   resizeXHandler(e: MouseEvent): void {
-    this.resizeX(e.pageX + 25);
+    console.log('resizeXHandler e.pageX : ' + e.pageX);
+    if (e.pageX) {
+      this.resizeX(e.pageX + 25);
+    }
   }
   resizeYHandler(e: MouseEvent): void {
     this.resizeY(e.pageY + 25);
@@ -129,13 +135,13 @@ export default class ResizableDivView extends Vue {
   padding: 5px;
 }
 #resizerY {
-  cursor: 'n-resize';
+  cursor: n-resize;
 }
 #resizerX {
-  cursor: 'e-resize';
+  cursor: e-resize;
 }
 #resizerXY {
-  cursor: 'ne-resize';
+  cursor: ne-resize;
 }
 </style>
 

@@ -48,7 +48,7 @@ export default class ResizableDivView extends Vue {
   name: string = 'ResizableDivView';
   padding: number = 5;
   margin: number = 5;
-  border: number = 5;
+  border: number = 1;
   previousX: number = 0;
   previousY: number = 0;
   $refs!: {
@@ -64,55 +64,45 @@ export default class ResizableDivView extends Vue {
 
   // 横方向のリサイズ
 　// 各Elementの幅調整
-  setElementsWidth(leftElementWidth: number): void {
-    const resizeArea: HTMLDivElement = this.$refs.resizeArea;
-    const resizeAreaWidth: number = resizeArea.clientWidth - 2 * this.padding;
-    console.log('resizeAreaWidth : ' + resizeAreaWidth);
-
-    const rightElementsWidth: number =
-      resizeAreaWidth
-      - (leftElementWidth + 2 * (this.margin + this.border + this.padding))　// element1
-      - 10; // resizerX
-
-    const rightElements: HTMLElement = this.$refs.rightElements;
-    rightElements.style.width = rightElementsWidth + 'px';
-
-    const innerElementsWidth = rightElementsWidth - 2 * (this.margin + this.border + this.padding);
-    const element2: HTMLDivElement = this.$refs.element2;
-    element2.style.width = innerElementsWidth + 'px';
-    const resizerY: HTMLDivElement = this.$refs.resizerY;
-    resizerY.style.width = innerElementsWidth + 'px';
-    const element3: HTMLDivElement = this.$refs.element3;
-    element3.style.width = innerElementsWidth + 'px';
-  }
   changeWidth(x: number): void {
+    const resizeArea: HTMLDivElement = this.$refs.resizeArea;
     const element1: HTMLDivElement = this.$refs.element1;
-    const width: number = element1.clientWidth - 2 * this.padding;
-    const xdev: number = x - this.previousX;
-    element1.style.width = width + xdev + 'px';
-    this.previousX = x;
-    this.setElementsWidth(width + xdev);
+    const resizerX: HTMLDivElement = this.$refs.resizerX;
+    const rightElement: HTMLDivElement = this.$refs.rightElements;
+    const element2: HTMLDivElement = this.$refs.element2;
+    const resizerY: HTMLDivElement = this.$refs.resizerY;
+    const element3: HTMLDivElement = this.$refs.element3;
+
+    const el1Width = x - 25;
+    element1.style.width = el1Width + 'px';
+    const rightElementWidth =
+      resizeArea.offsetWidth -
+      el1Width -
+      resizerX.offsetWidth -
+      2 * 2 * (this.border + this.padding);
+    rightElement.style.width = rightElementWidth + 'px';
+
+    const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding);
+    element2.style.width = innerElementWidth + 'px';
+    resizerY.style.width = innerElementWidth + 'px';
+    element3.style.width = innerElementWidth + 'px';
   }
   // 縦方向のリサイズ
 　// 各Elementの高さ調整
-  setElementsHeight(el2Height: number): void {
-    const rightElements: HTMLDivElement = this.$refs.rightElements;
-    const rightElementsHeight: number = rightElements.clientHeight; // rightElements は padding なし
-    const el3Height: number =
-      rightElementsHeight
-      - (el2Height + 2 * (this.padding + this.border +  this.margin)) // element2
-      - (10 + 2 * (this.padding + this.margin)) // resizerY
-      - 2 * (this.padding + this.border +  this.margin);
-    const element3: HTMLDivElement = this.$refs.element3;
-    element3.style.height = el3Height + 'px';
-  }
   changeHeight(y: number): void {
+    const rightElements: HTMLDivElement = this.$refs.rightElements;
     const element2: HTMLDivElement = this.$refs.element2;
-    const height: number = element2.clientHeight - 2 * this.padding;
-    const ydev: number = y - this.previousY;
-    element2.style.height = height + ydev + 'px';
-    this.previousY = y;
-    this.setElementsHeight(height + ydev);
+    const resizerY: HTMLElement = this.$refs.resizerY;
+    const element3: HTMLDivElement = this.$refs.element3;
+
+    const el2height: number = y - 15 - element2.offsetTop;
+    element2.style.height = el2height + 'px';
+    const el3height: number =
+      rightElements.offsetHeight -
+      el2height -
+      resizerY.offsetHeight -
+      2 * 2 * (this.border + this.padding); // el2, el3
+    element3.style.height = el3height + 'px';
   }
 
   // ドラッグ＆ドロップのイベントハンドラー
@@ -137,21 +127,28 @@ export default class ResizableDivView extends Vue {
     this.previousY = e.pageY;
   }
   yResizeEnd(e: MouseEvent) {
+    const resizeArea: HTMLDivElement = this.$refs.resizeArea;
+    const rightElements: HTMLDivElement = this.$refs.rightElements;
+    const element2: HTMLDivElement = this.$refs.element2;
     const resizerY: HTMLElement = this.$refs.resizerY;
+    const element3: HTMLDivElement = this.$refs.element3;
     resizerY.style.background = 'green';
     this.previousY = 0;
+    console.log('resizeArea.offsetTop : ' + resizeArea.offsetTop);
+    console.log('rightElements.offsetTop : ' + rightElements.offsetTop);
+    console.log('rightElements.offsetHeight : ' + rightElements.offsetHeight);
+    console.log('element2.offsetTop : ' + element2.offsetTop);
+    console.log('element2.offsetHeight : ' + element2.offsetHeight);
+    console.log('resizerY.offsetTop : ' + resizerY.offsetTop);
+    console.log('resizerY.offsetHeight : ' + resizerY.offsetHeight);
+    console.log('element3.offsetTop : ' + element3.offsetTop);
+    console.log('element3.offsetHeight : ' + element3.offsetHeight);
+    console.log('y : ' + e.pageY);
   }
   yResize(e: MouseEvent): void {
     if (e.pageY) {
       this.changeHeight(e.pageY);
     }
-  }
-
-  // 初期表示
-  mounted(): void {
-    const element1: HTMLDivElement = this.$refs.element1;
-    const width: number = element1.clientWidth - 2 * this.padding;
-    this.setElementsWidth(width);
   }
 }
 </script>
@@ -160,7 +157,7 @@ export default class ResizableDivView extends Vue {
 .element {
   border: 1px solid #999999;
   border-radius: 4px;
-  margin: 5px;
+  margin: 0px;
   padding: 5px;
 }
 #resizeArea {
@@ -171,14 +168,14 @@ export default class ResizableDivView extends Vue {
 /* */
 #element1 {
   width: 30%;
-  height: 380px;
+  height: 388px;
   float: left;
 }
 #resizerX {
   width: 10px;
-  height: 380px;
+  height: 388px;
   float: left;
-  margin: 5px 0px;
+  margin: 0px 0px;
   padding: 5px 0px;
   cursor: e-resize;
 }
@@ -192,12 +189,10 @@ export default class ResizableDivView extends Vue {
 }
 #resizerY {
   height: 10px;
-  margin: 10px 5px;
-  padding: 0px 5px;
+  margin: 0px 5px;
   cursor: n-resize;
 }
 #element3 {
   height: 168px;
 }
 </style>
-

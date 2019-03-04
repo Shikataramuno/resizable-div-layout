@@ -136,7 +136,8 @@ export default class ResizableDivView extends Vue {
       resizeArea.offsetWidth
       - element1.offsetWidth
       - resizerX.offsetWidth
-      - 2 * (this.border + this.padding);
+      - 2 * (this.border + this.padding)
+      - 1;
     rightElements.style.width = width + 'px';
 
     const height: number =
@@ -151,8 +152,8 @@ export default class ResizableDivView extends Vue {
       - 2 * (this.border + this.padding);
     rightElements.style.height = rightElementsHeight + 'px';
     const innerElementHeight: number =
-      (rightElementsHeight - resizerY.offsetHeight) / 2 -
-      2 * (this.border + this.padding);
+      (rightElementsHeight - resizerY.offsetHeight) / 2
+      - 2 * (this.border + this.padding);
     element2.style.height = innerElementHeight + 'px';
     element3.style.height = innerElementHeight + 'px';
   }

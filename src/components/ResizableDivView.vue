@@ -74,20 +74,6 @@ export default class ResizableDivView extends Vue {
     const adjust: number = 3 * (this.border + this.padding) + resizerX.offsetWidth;
     const el1Width: number = x - adjust;
     element1.style.width = el1Width + 'px';
-    /*
-    const rightElementWidth =
-      resizeArea.offsetWidth
-      - 4 * (this.border + this.padding) // resizeArea, element1
-      - el1Width
-      - resizerX.offsetWidth
-      - 1;
-    rightElement.style.width = rightElementWidth + 'px';
-
-    const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding); // el2,resizerY,el3
-    element2.style.width = innerElementWidth + 'px';
-    resizerY.style.width = innerElementWidth + 'px';
-    element3.style.width = innerElementWidth + 'px';
-    */
     const resizeAreaWidth =
       + (this.border + this.padding) // element1
       + el1Width
@@ -107,14 +93,6 @@ export default class ResizableDivView extends Vue {
     const adjust: number = element2.offsetTop + 2 * (this.border + this.padding) + resizerY.offsetHeight;
     const el2height: number = y - adjust;
     element2.style.height = el2height + 'px';
-    /*
-    const el3height: number =
-      rightElements.offsetHeight
-      - (el2height + 2 * (this.border + this.padding)) // element2
-      - resizerY.offsetHeight // resizerY
-      - 2 * (this.border + this.padding); // element3
-    element3.style.height = el3height + 'px';
-    */
   }
 
   // ドラッグ＆ドロップのイベントハンドラー

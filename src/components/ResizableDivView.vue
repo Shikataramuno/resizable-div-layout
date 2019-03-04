@@ -24,7 +24,7 @@
       </div>
       <div id="resizerY"
         ref="resizerY"
-        style="background: green;"
+        style="background: blue;"
         draggable="true"
         @dragstart="yResizeStart"
         @dragend="yResizeEnd"
@@ -47,10 +47,8 @@ import { Component, Prop, Vue } from 'vue-property-decorator';
 export default class ResizableDivView extends Vue {
   name: string = 'ResizableDivView';
   padding: number = 5;
-  margin: number = 5;
+  margin: number = 0;
   border: number = 1;
-  previousX: number = 0;
-  previousY: number = 0;
   $refs!: {
     'resizeArea': HTMLDivElement;
     'rightElements': HTMLDivElement;
@@ -77,9 +75,9 @@ export default class ResizableDivView extends Vue {
     element1.style.width = el1Width + 'px';
     const rightElementWidth =
       resizeArea.offsetWidth -
-      el1Width -
+      x -
       resizerX.offsetWidth -
-      2 * 2 * (this.border + this.padding);
+      2 * this.margin;
     rightElement.style.width = rightElementWidth + 'px';
 
     const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding);
@@ -98,23 +96,20 @@ export default class ResizableDivView extends Vue {
     const el2height: number = y - 15 - element2.offsetTop;
     element2.style.height = el2height + 'px';
     const el3height: number =
-      rightElements.offsetHeight -
-      el2height -
-      resizerY.offsetHeight -
-      2 * 2 * (this.border + this.padding); // el2, el3
+      (rightElements.offsetHeight - 2 * (this.border + this.padding)) -
+      (el2height + 2 * (this.border + this.padding)) -
+      resizerY.offsetHeight;
     element3.style.height = el3height + 'px';
   }
 
   // ドラッグ＆ドロップのイベントハンドラー
   xResizeStart(e: MouseEvent): void {
     const resizerX: HTMLElement = this.$refs.resizerX;
-    resizerX.style.background = '#000000';
-    this.previousX = e.pageX;
+    resizerX.style.background = 'gray';
   }
   xResizeEnd(e: MouseEvent): void {
     const resizerX: HTMLElement = this.$refs.resizerX;
     resizerX.style.background = 'red';
-    this.previousX = 0;
   }
   xResize(e: MouseEvent): void {
     if (e.pageX) {
@@ -123,32 +118,30 @@ export default class ResizableDivView extends Vue {
   }
   yResizeStart(e: MouseEvent): void {
     const resizerY: HTMLElement = this.$refs.resizerY;
-    resizerY.style.background = '#000000';
-    this.previousY = e.pageY;
+    resizerY.style.background = 'gray';
   }
   yResizeEnd(e: MouseEvent) {
-    const resizeArea: HTMLDivElement = this.$refs.resizeArea;
-    const rightElements: HTMLDivElement = this.$refs.rightElements;
-    const element2: HTMLDivElement = this.$refs.element2;
     const resizerY: HTMLElement = this.$refs.resizerY;
-    const element3: HTMLDivElement = this.$refs.element3;
-    resizerY.style.background = 'green';
-    this.previousY = 0;
-    console.log('resizeArea.offsetTop : ' + resizeArea.offsetTop);
-    console.log('rightElements.offsetTop : ' + rightElements.offsetTop);
-    console.log('rightElements.offsetHeight : ' + rightElements.offsetHeight);
-    console.log('element2.offsetTop : ' + element2.offsetTop);
-    console.log('element2.offsetHeight : ' + element2.offsetHeight);
-    console.log('resizerY.offsetTop : ' + resizerY.offsetTop);
-    console.log('resizerY.offsetHeight : ' + resizerY.offsetHeight);
-    console.log('element3.offsetTop : ' + element3.offsetTop);
-    console.log('element3.offsetHeight : ' + element3.offsetHeight);
-    console.log('y : ' + e.pageY);
+    resizerY.style.background = 'blue';
   }
   yResize(e: MouseEvent): void {
     if (e.pageY) {
       this.changeHeight(e.pageY);
     }
+  }
+  mounted(): void {
+    const resizeArea: HTMLDivElement = this.$refs.resizeArea;
+    const element1: HTMLDivElement = this.$refs.element1;
+    const resizerX: HTMLDivElement = this.$refs.resizerX;
+    const rightElements: HTMLDivElement = this.$refs.rightElements;
+
+    const width: number =
+      (resizeArea.offsetWidth - this.padding) -
+      (element1.offsetWidth - 2 * this.margin) -
+      resizerX.offsetWidth
+      - 2 * (this.border + this.padding);
+
+    rightElements.style.width = width + 'px';
   }
 }
 </script>
@@ -185,7 +178,7 @@ export default class ResizableDivView extends Vue {
   float: left;
 }
 #element2 {
-  height: 168px;
+  height: 183px;
 }
 #resizerY {
   height: 10px;
@@ -193,6 +186,6 @@ export default class ResizableDivView extends Vue {
   cursor: n-resize;
 }
 #element3 {
-  height: 168px;
+  height: 183px;
 }
 </style>

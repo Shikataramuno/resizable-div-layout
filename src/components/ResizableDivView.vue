@@ -74,6 +74,7 @@ export default class ResizableDivView extends Vue {
     const adjust: number = 3 * (this.border + this.padding) + resizerX.offsetWidth;
     const el1Width: number = x - adjust;
     element1.style.width = el1Width + 'px';
+    /*
     const rightElementWidth =
       resizeArea.offsetWidth
       - 4 * (this.border + this.padding) // resizeArea, element1
@@ -86,6 +87,14 @@ export default class ResizableDivView extends Vue {
     element2.style.width = innerElementWidth + 'px';
     resizerY.style.width = innerElementWidth + 'px';
     element3.style.width = innerElementWidth + 'px';
+    */
+    const resizeAreaWidth =
+      + (this.border + this.padding) // element1
+      + el1Width
+      + (this.border + this.padding) // element1
+      + resizerX.offsetWidth // resizerX
+      + rightElement.offsetWidth; // rightElement
+    resizeArea.style.width = resizeAreaWidth + 'px';
   }
   // 縦方向のリサイズ
 　// 各Elementの高さ調整
@@ -95,16 +104,17 @@ export default class ResizableDivView extends Vue {
     const resizerY: HTMLElement = this.$refs.resizerY;
     const element3: HTMLDivElement = this.$refs.element3;
 
-    // const el2height: number = y - 15 - element2.offsetTop;
     const adjust: number = element2.offsetTop + 2 * (this.border + this.padding) + resizerY.offsetHeight;
     const el2height: number = y - adjust;
     element2.style.height = el2height + 'px';
+    /*
     const el3height: number =
       rightElements.offsetHeight
       - (el2height + 2 * (this.border + this.padding)) // element2
       - resizerY.offsetHeight // resizerY
       - 2 * (this.border + this.padding); // element3
     element3.style.height = el3height + 'px';
+    */
   }
 
   // ドラッグ＆ドロップのイベントハンドラー
@@ -139,7 +149,6 @@ export default class ResizableDivView extends Vue {
     const element1: HTMLDivElement = this.$refs.element1;
     const resizerX: HTMLDivElement = this.$refs.resizerX;
     const rightElements: HTMLDivElement = this.$refs.rightElements;
-
     const width: number =
       (resizeArea.offsetWidth - this.padding) -
       (element1.offsetWidth - 2 * this.margin) -
@@ -161,7 +170,7 @@ export default class ResizableDivView extends Vue {
 #resizeArea {
   width: 99%;
   height: 400px;
-  /* overflow: auto; */
+  /* overflow-x: auto;*/
 }
 /* */
 #element1 {
@@ -179,8 +188,10 @@ export default class ResizableDivView extends Vue {
 }
 /* */
 #rightElements {
+  /* width: 600px; */
   height: 400px;
   float: left;
+  overflow: auto;
 }
 #element2 {
   height: 183px;

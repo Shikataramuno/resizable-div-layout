@@ -71,16 +71,18 @@ export default class ResizableDivView extends Vue {
     const resizerY: HTMLDivElement = this.$refs.resizerY;
     const element3: HTMLDivElement = this.$refs.element3;
 
-    const el1Width = x - 25;
+    const adjust: number = 3 * (this.border + this.padding) + resizerX.offsetWidth;
+    const el1Width: number = x - adjust;
     element1.style.width = el1Width + 'px';
     const rightElementWidth =
-      resizeArea.offsetWidth -
-      x -
-      resizerX.offsetWidth -
-      2 * this.margin;
+      resizeArea.offsetWidth
+      - 4 * (this.border + this.padding) // resizeArea, element1
+      - el1Width
+      - resizerX.offsetWidth
+      - 1;
     rightElement.style.width = rightElementWidth + 'px';
 
-    const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding);
+    const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding); // el2,resizerY,el3
     element2.style.width = innerElementWidth + 'px';
     resizerY.style.width = innerElementWidth + 'px';
     element3.style.width = innerElementWidth + 'px';
@@ -93,12 +95,15 @@ export default class ResizableDivView extends Vue {
     const resizerY: HTMLElement = this.$refs.resizerY;
     const element3: HTMLDivElement = this.$refs.element3;
 
-    const el2height: number = y - 15 - element2.offsetTop;
+    // const el2height: number = y - 15 - element2.offsetTop;
+    const adjust: number = element2.offsetTop + 2 * (this.border + this.padding) + resizerY.offsetHeight;
+    const el2height: number = y - adjust;
     element2.style.height = el2height + 'px';
     const el3height: number =
-      (rightElements.offsetHeight - 2 * (this.border + this.padding)) -
-      (el2height + 2 * (this.border + this.padding)) -
-      resizerY.offsetHeight;
+      rightElements.offsetHeight
+      - (el2height + 2 * (this.border + this.padding)) // element2
+      - resizerY.offsetHeight // resizerY
+      - 2 * (this.border + this.padding); // element3
     element3.style.height = el3height + 'px';
   }
 

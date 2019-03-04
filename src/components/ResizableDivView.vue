@@ -79,7 +79,8 @@ export default class ResizableDivView extends Vue {
       + el1Width
       + (this.border + this.padding) // element1
       + resizerX.offsetWidth // resizerX
-      + rightElement.offsetWidth; // rightElement
+      + rightElement.offsetWidth // rightElement
+      + 1;
     resizeArea.style.width = resizeAreaWidth + 'px';
   }
   // 縦方向のリサイズ
@@ -127,13 +128,33 @@ export default class ResizableDivView extends Vue {
     const element1: HTMLDivElement = this.$refs.element1;
     const resizerX: HTMLDivElement = this.$refs.resizerX;
     const rightElements: HTMLDivElement = this.$refs.rightElements;
-    const width: number =
-      (resizeArea.offsetWidth - this.padding) -
-      (element1.offsetWidth - 2 * this.margin) -
-      resizerX.offsetWidth
-      - 2 * (this.border + this.padding);
+    const element2: HTMLDivElement = this.$refs.element2;
+    const resizerY: HTMLDivElement = this.$refs.resizerY;
+    const element3: HTMLDivElement = this.$refs.element3;
 
+    const width: number =
+      resizeArea.offsetWidth
+      - element1.offsetWidth
+      - resizerX.offsetWidth
+      - 2 * (this.border + this.padding);
     rightElements.style.width = width + 'px';
+
+    const height: number =
+      resizeArea.offsetHeight
+      - 2 * (this.border + this.padding)
+      - 2 * (this.border + this.padding);
+    element1.style.height = height + 'px';
+    resizerX.style.height = height + 'px';
+
+    const rightElementsHeight: number =
+      resizeArea.offsetHeight
+      - 2 * (this.border + this.padding);
+    rightElements.style.height = rightElementsHeight + 'px';
+    const innerElementHeight: number =
+      (rightElementsHeight - resizerY.offsetHeight) / 2 -
+      2 * (this.border + this.padding);
+    element2.style.height = innerElementHeight + 'px';
+    element3.style.height = innerElementHeight + 'px';
   }
 }
 </script>
@@ -147,18 +168,15 @@ export default class ResizableDivView extends Vue {
 }
 #resizeArea {
   width: 99%;
-  height: 400px;
-  /* overflow-x: auto;*/
+  height: 90vh;
 }
 /* */
 #element1 {
   width: 30%;
-  height: 388px;
   float: left;
 }
 #resizerX {
   width: 10px;
-  height: 388px;
   float: left;
   margin: 0px 0px;
   padding: 5px 0px;
@@ -166,20 +184,12 @@ export default class ResizableDivView extends Vue {
 }
 /* */
 #rightElements {
-  /* width: 600px; */
-  height: 400px;
   float: left;
   overflow: auto;
-}
-#element2 {
-  height: 183px;
 }
 #resizerY {
   height: 10px;
   margin: 0px 5px;
   cursor: n-resize;
-}
-#element3 {
-  height: 183px;
 }
 </style>

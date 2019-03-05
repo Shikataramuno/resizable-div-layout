@@ -60,8 +60,7 @@ export default class ResizableDivView extends Vue {
     'resizerY': HTMLDivElement;
   };
 
-  // 横方向のリサイズ
-　// 各Elementの幅調整
+  // 幅方向のリサイズ
   changeWidth(x: number): void {
     const resizeArea: HTMLDivElement = this.$refs.resizeArea;
     const element1: HTMLDivElement = this.$refs.element1;
@@ -85,8 +84,7 @@ export default class ResizableDivView extends Vue {
       - 1;
     rightElement.style.width = rightElementWidth + 'px';
   }
-  // 縦方向のリサイズ
-　// 各Elementの高さ調整
+  // 高さ方向のリサイズ
   changeHeight(y: number): void {
     const rightElements: HTMLDivElement = this.$refs.rightElements;
     const element2: HTMLDivElement = this.$refs.element2;

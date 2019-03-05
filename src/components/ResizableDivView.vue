@@ -71,7 +71,10 @@ export default class ResizableDivView extends Vue {
     const resizerY: HTMLDivElement = this.$refs.resizerY;
     const element3: HTMLDivElement = this.$refs.element3;
 
-    const adjust: number = 3 * (this.border + this.padding) + resizerX.offsetWidth;
+    const adjust: number =
+      element1.offsetLeft // element1 左端
+      + 2 * (this.border + this.padding) // element1 左右 border,padding
+      + resizerX.offsetWidth; // resizerX 幅
     const el1Width: number = x - adjust;
     element1.style.width = el1Width + 'px';
     const rightElementWidth =
@@ -95,8 +98,10 @@ export default class ResizableDivView extends Vue {
     const resizerY: HTMLElement = this.$refs.resizerY;
     const element3: HTMLDivElement = this.$refs.element3;
 
-    // const el2height: number = y - 15 - element2.offsetTop;
-    const adjust: number = element2.offsetTop + 2 * (this.border + this.padding) + resizerY.offsetHeight;
+    const adjust: number =
+      element2.offsetTop // element2 上端
+      + 2 * (this.border + this.padding) // element2 上下 border,padding
+      + resizerY.offsetHeight; // resizerY 高さ
     const el2height: number = y - adjust;
     element2.style.height = el2height + 'px';
     const el3height: number =

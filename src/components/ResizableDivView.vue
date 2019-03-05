@@ -84,11 +84,6 @@ export default class ResizableDivView extends Vue {
       - resizerX.offsetWidth
       - 1;
     rightElement.style.width = rightElementWidth + 'px';
-
-    const innerElementWidth: number = rightElementWidth - 2 * (this.border + this.padding); // el2,resizerY,el3
-    element2.style.width = innerElementWidth + 'px';
-    resizerY.style.width = innerElementWidth + 'px';
-    element3.style.width = innerElementWidth + 'px';
   }
   // 縦方向のリサイズ
 　// 各Elementの高さ調整
